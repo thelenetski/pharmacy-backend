@@ -4,6 +4,7 @@ import { randomBytes } from 'crypto';
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
+import { generateTokens } from '../utils/token.js';
 
 /*-------------------LOGIN--------------------*/
 export const loginUser = async (payload) => {
@@ -19,8 +20,7 @@ export const loginUser = async (payload) => {
 
   await SessionsCollection.deleteOne({ userId: user._id });
 
-  const accessToken = randomBytes(30).toString('base64');
-  const refreshToken = randomBytes(30).toString('base64');
+  const { accessToken, refreshToken } = generateTokens(user);
 
   return await SessionsCollection.create({
     userId: user._id,
@@ -34,6 +34,11 @@ export const loginUser = async (payload) => {
 /*-------------------LOGOUT--------------------*/
 export const logoutUser = async (sessionId) => {
   await SessionsCollection.deleteOne({ _id: sessionId });
+};
+
+/*-------------------USER INFO--------------------*/
+export const userInfo = async (payload) => {
+  return await UsersCollection.findById(payload);
 };
 
 /*-------------------SESSION--------------------*/
