@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import { env } from '../utils/env.js';
-import createHttpError from 'http-errors';
 
 export const generateTokens = (user) => {
   const accessToken = jwt.sign(
@@ -27,6 +26,6 @@ export const verifyToken = (token) => {
   try {
     return jwt.verify(token, env('JWT_SECRET'));
   } catch {
-    throw createHttpError(401, 'Token expired');
+    return { error: 'Unauthorized. Please log in.' };
   }
 };
