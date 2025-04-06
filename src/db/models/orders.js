@@ -13,10 +13,4 @@ const ordersSchema = new Schema(
   { timestamps: true, versionKey: false },
 );
 
-ordersSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  delete obj.password;
-  return obj;
-};
-
 export const ordersCollection = model('orders', ordersSchema);

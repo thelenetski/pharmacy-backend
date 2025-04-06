@@ -1,9 +1,9 @@
 import {
   allCustomersCollection,
-  allProductsCollection,
-  allSuppliersCollection,
   incomeExpensesCollection,
 } from '../db/models/dashboard.js';
+import { allProductsCollection } from '../db/models/products.js';
+import { allSuppliersCollection } from '../db/models/suppliers.js';
 
 export const dashboardData = async () => {
   const allProducts = await allProductsCollection.countDocuments();

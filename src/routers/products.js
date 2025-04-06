@@ -1,10 +1,26 @@
 import { Router } from 'express';
 import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { checkRole } from '../middlewares/checkRole.js';
-import { productsController } from '../controllers/products.js';
+import {
+  getProductsController,
+  addProductsController,
+  editProductsController,
+  deleteProductsController,
+} from '../controllers/products.js';
 
 const productsRouter = Router();
 
-productsRouter.get('/', checkRole, ctrlWrapper(productsController));
+productsRouter.get('/', checkRole, ctrlWrapper(getProductsController));
+productsRouter.post('/', checkRole, ctrlWrapper(addProductsController));
+productsRouter.put(
+  '/:productId',
+  checkRole,
+  ctrlWrapper(editProductsController),
+);
+productsRouter.delete(
+  '/:productId',
+  checkRole,
+  ctrlWrapper(deleteProductsController),
+);
 
 export default productsRouter;
