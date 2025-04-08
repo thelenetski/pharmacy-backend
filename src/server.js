@@ -13,7 +13,19 @@ export const startServer = () => {
   const app = express();
 
   app.use(express.json());
-  app.use(cors());
+
+  const allowedOrigins = [
+    'http://localhost:5173', // Локальный источник
+    'https://imaginative-figolla-2b5fbf.netlify.app',
+  ];
+
+  app.use(
+    cors({
+      origin: allowedOrigins,
+      credentials: true,
+    }),
+  );
+
   app.use(cookieParser());
 
   app.use(
