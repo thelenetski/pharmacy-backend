@@ -42,7 +42,6 @@ export const userInfo = async (payload) => {
 
 /*-------------------SESSION--------------------*/
 const createSession = (user) => {
-  console.log(user);
   if (!user) {
     throw createHttpError(401, 'Unauthorized. Please log in.');
   }
