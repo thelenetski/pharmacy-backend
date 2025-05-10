@@ -15,8 +15,8 @@ export const startServer = () => {
   app.use(express.json());
 
   const allowedOrigins = [
-    'http://localhost:5173', // Локальный источник
-    'https://imaginative-figolla-2b5fbf.netlify.app',
+    'http://localhost:5173',
+    'https://e-pharmacy-health.netlify.app/',
   ];
 
   app.use(
