@@ -16,7 +16,7 @@ export const startServer = () => {
 
   const allowedOrigins = [
     'http://localhost:5173',
-    'https://e-pharmacy-health.netlify.app/',
+    'https://e-pharmacy-health.netlify.app',
   ];
 
   app.use(
