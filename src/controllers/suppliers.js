@@ -4,9 +4,14 @@ import {
   editSupplier,
   getSuppliers,
 } from '../services/suppliers.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
+import { parseFilterParams } from '../utils/parseFilterParams.js';
 
 export const getSuppliersController = async (req, res) => {
-  const data = await getSuppliers();
+  const filter = parseFilterParams(req.query);
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  const data = await getSuppliers({ page, perPage, filter });
 
   if (data.length === 0) {
     throw createHttpError(404, 'Nothing found');
@@ -15,7 +20,13 @@ export const getSuppliersController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Successfully get suppliers',
-    data,
+    page: data.page,
+    perPage: data.page,
+    totalItems: data.totalItems,
+    totalPages: data.totalPages,
+    hasNextPage: data.hasNextPage,
+    hasPreviousPage: data.hasPreviousPage,
+    data: data.data,
   });
 };
 

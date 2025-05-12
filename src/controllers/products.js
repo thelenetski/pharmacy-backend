@@ -3,11 +3,13 @@ import { deleteProduct, getProducts } from '../services/products.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { addProduct } from '../services/products.js';
 import { editProduct } from '../services/products.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
 export const getProductsController = async (req, res) => {
   const filter = parseFilterParams(req.query);
+  const { page, perPage } = parsePaginationParams(req.query);
 
-  const data = await getProducts({ filter });
+  const data = await getProducts({ page, perPage, filter });
 
   if (data.length === 0) {
     throw createHttpError(404, 'Nothing found');
@@ -16,7 +18,13 @@ export const getProductsController = async (req, res) => {
   res.json({
     status: 200,
     message: 'Successfully get products',
-    data,
+    page: data.page,
+    perPage: data.page,
+    totalItems: data.totalItems,
+    totalPages: data.totalPages,
+    hasNextPage: data.hasNextPage,
+    hasPreviousPage: data.hasPreviousPage,
+    data: data.data,
   });
 };
 

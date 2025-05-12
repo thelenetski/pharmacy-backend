@@ -1,14 +1,28 @@
 import createHttpError from 'http-errors';
 import { allProductsCollection } from '../db/models/products.js';
+import { calculatePaginationData } from '../utils/calculatePaginationData.js';
 
-export const getProducts = async ({ filter = {} }) => {
-  const products = allProductsCollection.find(
-    filter.name && {
-      name: { $regex: filter.name, $options: 'i' },
-    },
-  );
+export const getProducts = async ({ page = 1, perPage = 5, filter = {} }) => {
+  const limit = perPage;
+  const skip = (page - 1) * perPage;
 
-  return products;
+  const query = {};
+
+  if (filter.name) {
+    query.name = { $regex: filter.name, $options: 'i' };
+  }
+
+  const [total, products] = await Promise.all([
+    allProductsCollection.countDocuments(query),
+    allProductsCollection.find(query).skip(skip).limit(limit),
+  ]);
+
+  const paginationData = calculatePaginationData(total, perPage, page);
+
+  return {
+    data: products,
+    ...paginationData,
+  };
 };
 
 export const addProduct = async (payload) => {
