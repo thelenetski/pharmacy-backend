@@ -17,6 +17,6 @@ export const ordersController = async (req, res) => {
     totalPages: data.totalPages,
     hasNextPage: data.hasNextPage,
     hasPreviousPage: data.hasPreviousPage,
-    data: data.orders,
+    data: data.data,
   });
 };
