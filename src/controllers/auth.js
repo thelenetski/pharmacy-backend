@@ -9,30 +9,34 @@ import {
 import { verifyToken } from '../utils/token.js';
 
 /*-------------------LOGIN--------------------*/
-export const loginUserController = async (req, res) => {
-  const session = await loginUser(req.body);
+export const loginUserController = async (req, res, next) => {
+  try {
+    const session = await loginUser(req.body);
 
-  res.cookie('refreshToken', session.refreshToken, {
-    httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None',
-    secure: true,
-  });
-  res.cookie('sessionId', session._id, {
-    httpOnly: true,
-    expires: new Date(Date.now() + ONE_DAY),
-    sameSite: 'None',
-    secure: true,
-  });
+    res.cookie('refreshToken', session.refreshToken, {
+      httpOnly: true,
+      expires: new Date(Date.now() + ONE_DAY),
+      sameSite: 'None',
+      secure: true,
+    });
+    res.cookie('sessionId', session._id, {
+      httpOnly: true,
+      expires: new Date(Date.now() + ONE_DAY),
+      sameSite: 'None',
+      secure: true,
+    });
 
-  res.json({
-    status: 200,
-    message: 'Successfully logged in an user!',
-    data: {
-      accessToken: session.accessToken,
-      email: req.body.email,
-    },
-  });
+    res.json({
+      status: 200,
+      message: 'Successfully logged in an user!',
+      data: {
+        accessToken: session.accessToken,
+        email: req.body.email,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 /*-------------------LOGOUT--------------------*/
