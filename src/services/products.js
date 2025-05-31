@@ -12,15 +12,17 @@ export const getProducts = async ({ page = 1, perPage = 5, filter = {} }) => {
     query.name = { $regex: filter.name, $options: 'i' };
   }
 
-  const [total, products] = await Promise.all([
+  const [total, products, categories] = await Promise.all([
     allProductsCollection.countDocuments(query),
     allProductsCollection.find(query).skip(skip).limit(limit),
+    allProductsCollection.distinct('category'),
   ]);
 
   const paginationData = calculatePaginationData(total, perPage, page);
 
   return {
     data: products,
+    categories,
     ...paginationData,
   };
 };

@@ -25,6 +25,7 @@ export const getProductsController = async (req, res) => {
     hasNextPage: data.hasNextPage,
     hasPreviousPage: data.hasPreviousPage,
     data: data.data,
+    categories: data.categories,
   });
 };
 
