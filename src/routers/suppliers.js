@@ -3,6 +3,7 @@ import { ctrlWrapper } from '../utils/ctrlWrapper.js';
 import { checkRole } from '../middlewares/checkRole.js';
 import {
   addSuppliersController,
+  deleteSuppliersController,
   editSuppliersController,
   getSuppliersController,
 } from '../controllers/suppliers.js';
@@ -15,5 +16,10 @@ suppliersRouter.put(
   '/:supplierId',
   checkRole,
   ctrlWrapper(editSuppliersController),
+);
+suppliersRouter.delete(
+  '/:productId',
+  checkRole,
+  ctrlWrapper(deleteSuppliersController),
 );
 export default suppliersRouter;

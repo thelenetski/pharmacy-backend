@@ -40,3 +40,11 @@ export const editSupplier = async (payload) => {
 
   return suppliers;
 };
+
+export const deleteSupplier = async (payload) => {
+  const supplier = await allSuppliersCollection.findOneAndDelete({
+    _id: payload,
+  });
+
+  if (!supplier) throw createHttpError(404, 'Supplier not found');
+};

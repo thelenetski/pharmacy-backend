@@ -1,6 +1,7 @@
 import createHttpError from 'http-errors';
 import {
   addSupplier,
+  deleteSupplier,
   editSupplier,
   getSuppliers,
 } from '../services/suppliers.js';
@@ -48,5 +49,17 @@ export const editSuppliersController = async (req, res) => {
     status: 201,
     message: 'Successfully edited supplier',
     data: supplier,
+  });
+};
+
+export const deleteSuppliersController = async (req, res) => {
+  const { suppliersId } = req.params;
+
+  await deleteSupplier(suppliersId);
+
+  res.status(200).send({
+    status: 200,
+    message: 'Successfully deleted suppliers',
+    data: suppliersId,
   });
 };
