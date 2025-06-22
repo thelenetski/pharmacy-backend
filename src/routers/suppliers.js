@@ -18,7 +18,7 @@ suppliersRouter.put(
   ctrlWrapper(editSuppliersController),
 );
 suppliersRouter.delete(
-  '/:productId',
+  '/:supplierId',
   checkRole,
   ctrlWrapper(deleteSuppliersController),
 );
