@@ -53,13 +53,13 @@ export const editSuppliersController = async (req, res) => {
 };
 
 export const deleteSuppliersController = async (req, res) => {
-  const { suppliersId } = req.params;
+  const { supplierId } = req.params;
 
-  await deleteSupplier(suppliersId);
+  await deleteSupplier(supplierId);
 
   res.status(200).send({
     status: 200,
     message: 'Successfully deleted suppliers',
-    data: suppliersId,
+    data: supplierId,
   });
 };
