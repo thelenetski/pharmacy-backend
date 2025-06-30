@@ -90,7 +90,7 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
   );
 
   return {
-    _id: session.userId,
+    _id: sessionId,
     ...newSessionData,
   };
 };
