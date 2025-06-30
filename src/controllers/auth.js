@@ -14,13 +14,13 @@ export const loginUserController = async (req, res) => {
 
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: new Date(Date.now() + ONE_WEEK),
+    maxAge: ONE_WEEK,
     sameSite: 'None',
     secure: true,
   });
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: new Date(Date.now() + ONE_WEEK),
+    maxAge: ONE_WEEK,
     sameSite: 'None',
     secure: true,
   });
@@ -72,13 +72,13 @@ export const userInfoController = async (req, res) => {
 const setupSession = (res, session) => {
   res.cookie('refreshToken', session.refreshToken, {
     httpOnly: true,
-    expires: new Date(Date.now() + ONE_WEEK),
+    maxAge: ONE_WEEK,
     sameSite: 'None',
     secure: true,
   });
   res.cookie('sessionId', session._id, {
     httpOnly: true,
-    expires: new Date(Date.now() + ONE_WEEK),
+    maxAge: ONE_WEEK,
     sameSite: 'None',
     secure: true,
   });
