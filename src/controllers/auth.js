@@ -18,7 +18,7 @@ export const loginUserController = async (req, res) => {
     sameSite: 'None',
     secure: true,
   });
-  res.cookie('sessionId', session._id, {
+  res.cookie('sessionId', session._id.toString(), {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_WEEK),
     sameSite: 'None',
@@ -76,7 +76,7 @@ const setupSession = (res, session) => {
     sameSite: 'None',
     secure: true,
   });
-  res.cookie('sessionId', session._id, {
+  res.cookie('sessionId', session._id.toString(), {
     httpOnly: true,
     expires: new Date(Date.now() + ONE_WEEK),
     sameSite: 'None',
