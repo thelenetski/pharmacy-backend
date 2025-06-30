@@ -2,7 +2,7 @@ import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
 import { UsersCollection } from '../db/models/user.js';
 import { SessionsCollection } from '../db/models/session.js';
-import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
+import { FIFTEEN_MINUTES, ONE_WEEK } from '../constants/index.js';
 import { generateTokens } from '../utils/token.js';
 
 /*-------------------LOGIN--------------------*/
@@ -21,13 +21,19 @@ export const loginUser = async (payload) => {
 
   const { accessToken, refreshToken } = generateTokens(user);
 
-  return await SessionsCollection.create({
+  const sessionData = {
     userId: user._id,
     accessToken,
     refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
-  });
+    refreshTokenValidUntil: new Date(Date.now() + ONE_WEEK),
+  };
+
+  return await SessionsCollection.findOneAndUpdate(
+    { userId: user._id },
+    { $set: sessionData },
+    { upsert: true, new: true },
+  );
 };
 
 /*-------------------LOGOUT--------------------*/
@@ -46,13 +52,12 @@ const createSession = (user) => {
     throw createHttpError(401, 'Unauthorized. Please log in.');
   }
   const token = generateTokens(user);
-  // const refreshToken = randomBytes(30).toString('base64');
 
   return {
     accessToken: token.accessToken,
     refreshToken: token.refreshToken,
     accessTokenValidUntil: new Date(Date.now() + FIFTEEN_MINUTES),
-    refreshTokenValidUntil: new Date(Date.now() + ONE_DAY),
+    refreshTokenValidUntil: new Date(Date.now() + ONE_WEEK),
   };
 };
 
@@ -77,12 +82,15 @@ export const refreshUsersSession = async ({ sessionId, refreshToken }) => {
     throw createHttpError(401, 'Session token expired');
   }
 
-  const newSession = createSession(user);
+  const newSessionData = createSession(user);
 
-  await SessionsCollection.deleteOne({ _id: sessionId, refreshToken });
+  await SessionsCollection.updateOne(
+    { _id: sessionId, refreshToken },
+    { $set: newSessionData },
+  );
 
-  return await SessionsCollection.create({
+  return {
     userId: session.userId,
-    ...newSession,
-  });
+    ...newSessionData,
+  };
 };
