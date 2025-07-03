@@ -17,7 +17,7 @@ export const loginUser = async (payload) => {
     throw createHttpError(401, 'Incorrect password');
   }
 
-  await SessionsCollection.deleteOne({ userId: user._id });
+  // await SessionsCollection.deleteOne({ userId: user._id });
 
   const { accessToken, refreshToken } = generateTokens(user);
 
